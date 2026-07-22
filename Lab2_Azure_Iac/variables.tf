@@ -1,0 +1,20 @@
+variable "application_name" {
+  description = "Name of the application"
+  type        = string
+}
+
+variable "environment_name" {
+  description = "Name of the environment"
+  type        = string
+}
+
+variable "primary_location" {
+  description = "Name of the primary location"
+  type        = string
+}
+
+
+variable "tags" {
+  description = "Tag definition"
+  type        = string
+}

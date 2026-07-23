@@ -27,3 +27,4 @@ terraform workspace select "${TF_VAR_environment_name}" || terraform workspace n
 # Terraform plan and apply with the provided variables
 
 terraform "$@"
+

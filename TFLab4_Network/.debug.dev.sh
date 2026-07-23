@@ -4,8 +4,6 @@ export ARM_ACCESS_KEY=$(az storage account keys list
   --resource-group rg-Backend_tfstate-test 
   --account-name stterraformkjejh2um 
   --query "[0].value" -o tsv)
-
-
 # Set the environment name and tags for the Terraform configuration
 
 export TF_VAR_environment_name="dev"

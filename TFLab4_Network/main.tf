@@ -89,8 +89,7 @@ resource "azurerm_network_security_group" "database_nsg" {
   }
 
   tags = {
-    environment = "${var.tags["Environment"]}" 
-#Test1
+    environment = "${var.tags["Environment"]}"
   }
 }
 

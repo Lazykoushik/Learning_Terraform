@@ -93,3 +93,15 @@ resource "azurerm_network_security_group" "database_nsg" {
   }
 }
 
+
+
+resource "azurerm_subnet_network_security_group_association" "Application-Subnet-NSG" {
+  subnet_id                 = azurerm_subnet.application_subnet.id
+  network_security_group_id = azurerm_network_security_group.application_nsg.id
+}
+
+
+resource "azurerm_subnet_network_security_group_association" "Database-Subnet-NSG" {
+  subnet_id                 = azurerm_subnet.database_subnet.id
+  network_security_group_id = azurerm_network_security_group.database_nsg.id
+}

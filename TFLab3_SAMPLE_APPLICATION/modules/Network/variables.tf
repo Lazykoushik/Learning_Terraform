@@ -24,3 +24,26 @@ variable "tags" {
   type        = map(string)
 }
 
+variable "security_group_definitions" {
+  description = "Map of NSG identifiers to their rule sets"
+  type = map(list(object({
+    name                       = string
+    priority                   = number
+    direction                  = string
+    access                     = string
+    protocol                   = string
+    source_port_range          = string
+    destination_port_range     = string
+    source_address_prefix      = string
+    destination_address_prefix = string
+  })))
+}
+
+variable "subnet_definitions" {
+  description = "List of subnet definitions"
+  type = map(object({
+    name            = string
+    cider_range     = string
+    nsg_association = string
+  }))
+}

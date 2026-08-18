@@ -8,6 +8,18 @@ output "vnet_app1_name" {
   description = "Name of the created Virtual network for the Application 1"
 }
 
+# modules/Network/outputs.tf
+output "subnet_ids" {
+  value = { for k, v in azurerm_subnet.subnet_creation : k => v.id }
+}
+
+# modules/Network/outputs.tf
+output "subnet_names" {
+  value = { for k, v in azurerm_subnet.subnet_creation : k => v.name }
+}
+
+
+/*
 output "application_subnet_id" {
   value       = azurerm_subnet.application_subnet.id
   description = "ID of the created Application subnet"
@@ -38,3 +50,10 @@ output "Gateway_subnet_name" {
   value       = azurerm_subnet.Gateway_subnet.name
   description = "Name of the created Gateway subnet"
 }
+*/
+
+output "nsg_rule_ids" {
+  value       = { for k, v in azurerm_network_security_group.nsg_rule_creation : k => v.id }
+  description = "Map of NSG identifiers to their IDs"
+}
+

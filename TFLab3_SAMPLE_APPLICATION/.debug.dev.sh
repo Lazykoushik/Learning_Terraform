@@ -7,8 +7,8 @@ export ARM_ACCESS_KEY=$(az storage account keys list
 # Set the environment name and tags for the Terraform configuration
 
 export TF_VAR_environment_name="dev"
-export TF_VAR_application_name="Network"
-export TF_VAR_tags='{"Environment":"dev","Owner":"koushik","Project":"Network"}'
+export TF_VAR_application_name="TestApplication1"
+export TF_VAR_tags='{"Environment":"dev","Owner":"koushik","Cost-Center":"hec01"}'
 
 # Terraform init
 
@@ -16,7 +16,7 @@ terraform init -reconfigure \
     -backend-config="resource_group_name=rg-Backend_tfstate-test" \
     -backend-config="storage_account_name=stterraformkjejh2um" \
     -backend-config="container_name=tfstate-files" \
-    -backend-config="key=dev.networkterraform.tfstate"
+    -backend-config="key=dev.${TF_VAR_application_name}.networkterraform.tfstate"
 
 # Terraform workspace select or create the workspace for the environment
 
@@ -25,4 +25,3 @@ terraform workspace select "${TF_VAR_environment_name}" || terraform workspace n
 # Terraform plan and apply with the provided variables
 
 terraform "$@"
-

@@ -34,19 +34,24 @@ resource "tls_private_key" "vm_ssh_key" {
   rsa_bits  = 4096
 }
 
-resource "local_file" "private_key_file" {
-  content         = tls_private_key.vm_ssh_key.private_key_pem
-  filename        = pathexpand("~/source/repos/Terraform101/TFLab3_SAMPLE_APPLICATION/.ssh/vm_key.pem")
-  file_permission = "0600"
+data "azurerm_key_vault" "keyvault-dev" {
+  name                = "TerraformLab101-keyvault"
+  resource_group_name = "rg-TerraformLab101-keyvault-dev"
 }
-
-resource "local_file" "public_key_file" {
-  content         = tls_private_key.vm_ssh_key.public_key_openssh
-  filename        = pathexpand("~/source/repos/Terraform101/TFLab3_SAMPLE_APPLICATION/.ssh/vm_key.pub")
-  file_permission = "0644"
-}
-
 /*
+resource "azurerm_key_vault_secret" "VM1_ssh_PrivateKey" {
+  name         = "VM1-ssh-PrivateKey"
+  value        = tls_private_key.vm_ssh_key.private_key_pem
+  key_vault_id = data.azurerm_key_vault.keyvault-dev.id
+}
+
+resource "azurerm_key_vault_secret" "VM1_ssh_PublicKey" {
+  name         = "VM1-ssh-PublicKey"
+  value        = tls_private_key.vm_ssh_key.public_key_openssh
+  key_vault_id = data.azurerm_key_vault.keyvault-dev.id
+}
+
+
 module "Compute" {
   source              = "./modules/Compute"
   for_each            = toset([for i in range(var.vm_count) : "VM${i + 1}"])
@@ -59,3 +64,13 @@ module "Compute" {
   tags                = { Environment = "${var.tags["Environment"]}-${var.tags["Cost-Center"]}" }
 }
 */
+
+
+locals {
+  users = { for k in csvdecode(file("/home/koushik/Desktop/terraform_test_folder/users.csv")) : k.user_principal_name => k }
+}
+module "Usermanagement" {
+  source          = "./modules/Usermanagement"
+  user_definition = local.users
+}
+

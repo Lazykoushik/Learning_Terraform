@@ -38,7 +38,7 @@ data "azurerm_key_vault" "keyvault-dev" {
   name                = "TerraformLab101-keyvault"
   resource_group_name = "rg-TerraformLab101-keyvault-dev"
 }
-
+/*
 resource "azurerm_key_vault_secret" "VM1_ssh_PrivateKey" {
   name         = "VM1-ssh-PrivateKey"
   value        = tls_private_key.vm_ssh_key.private_key_pem
@@ -51,7 +51,7 @@ resource "azurerm_key_vault_secret" "VM1_ssh_PublicKey" {
   key_vault_id = data.azurerm_key_vault.keyvault-dev.id
 }
 
-/*
+
 module "Compute" {
   source              = "./modules/Compute"
   for_each            = toset([for i in range(var.vm_count) : "VM${i + 1}"])
@@ -64,3 +64,13 @@ module "Compute" {
   tags                = { Environment = "${var.tags["Environment"]}-${var.tags["Cost-Center"]}" }
 }
 */
+
+
+locals {
+  users = { for k in csvdecode(file("/home/koushik/Desktop/terraform_test_folder/users.csv")) : k.user_principal_name => k }
+}
+module "Usermanagement" {
+  source          = "./modules/Usermanagement"
+  user_definition = local.users
+}
+
